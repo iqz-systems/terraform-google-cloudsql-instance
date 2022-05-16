@@ -25,7 +25,7 @@ resource "google_sql_database_instance" "db_instance" {
       enabled                        = true
       start_time                     = "06:00" # 6 AM in the region
       point_in_time_recovery_enabled = true
-      location                       = var.region
+      location                       = var.project_region
       backup_retention_settings {
         retained_backups = 30
         retention_unit   = "COUNT"
