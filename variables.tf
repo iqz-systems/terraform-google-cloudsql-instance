@@ -1,11 +1,16 @@
 variable "project_id" {
   type        = string
-  description = "The project id for the project where the resources should be created."
+  description = "The id of the project where the instance has to be created."
 }
 
-variable "region" {
+variable "project_region" {
   type        = string
   description = "The region where the resources will be created."
+}
+
+variable "project_zone" {
+  type        = string
+  description = "The zone where the resources will be created."
 }
 
 variable "instance_name" {

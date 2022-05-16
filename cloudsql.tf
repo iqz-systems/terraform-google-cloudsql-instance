@@ -1,7 +1,7 @@
 resource "google_sql_database_instance" "db_instance" {
   name    = lower("${var.instance_name}-db${var.suffix == "" ? "" : "-" + var.suffix}")
   project = var.project_id
-  region  = var.region
+  region  = var.project_region
 
   database_version    = var.database_version
   deletion_protection = var.deletion_protection
