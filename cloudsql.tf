@@ -1,5 +1,5 @@
 resource "google_sql_database_instance" "db_instance" {
-  name    = lower("${var.instance_name}-db${var.suffix == "" ? "" : "-" + var.suffix}")
+  name    = lower("${var.instance_name}-db${var.suffix == "" ? "" : join("", ["-", var.suffix])}")
   project = var.project_id
   region  = var.project_region
 
