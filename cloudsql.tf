@@ -1,7 +1,5 @@
 resource "google_sql_database_instance" "db_instance" {
-  name    = lower("${var.instance_name}-db${var.suffix == "" ? "" : join("", ["-", var.suffix])}")
-  project = var.project_id
-  region  = var.project_region
+  name = lower("${var.instance_name}-db${var.suffix == "" ? "" : join("", ["-", var.suffix])}")
 
   database_version    = var.database_version
   deletion_protection = var.deletion_protection
@@ -16,16 +14,18 @@ resource "google_sql_database_instance" "db_instance" {
       "project" = var.project_id
     }
 
-    database_flags {
-      name  = "max_connections"
-      value = "150"
+    dynamic "database_flags" {
+      for_each = var.database_flags
+      content {
+        name  = database_flags.value["name"]
+        value = database_flags.value["value"]
+      }
     }
 
     backup_configuration {
       enabled                        = true
       start_time                     = "06:00" # 6 AM in the region
       point_in_time_recovery_enabled = true
-      location                       = var.project_region
       backup_retention_settings {
         retained_backups = 30
         retention_unit   = "COUNT"
@@ -60,9 +60,12 @@ resource "google_sql_database_instance" "db_instance" {
 }
 
 resource "random_password" "default_user_password" {
-  length           = 64
-  special          = true
-  override_special = "_%()@!~+-*"
+  length  = 64
+  special = false
+  upper   = true
+  lower   = true
+  numeric = true
+  # override_special = "_%()@!~+-*"
 
   keepers = {
     user_name = "db_default_user"
@@ -73,5 +76,4 @@ resource "google_sql_user" "default_user" {
   name     = random_password.default_user_password.keepers.user_name
   instance = google_sql_database_instance.db_instance.name
   password = random_password.default_user_password.result
-  project  = var.project_id
 }

@@ -1,18 +1,3 @@
-variable "project_id" {
-  type        = string
-  description = "The id of the project where the instance has to be created."
-}
-
-variable "project_region" {
-  type        = string
-  description = "The region where the resources will be created."
-}
-
-variable "project_zone" {
-  type        = string
-  description = "The zone where the resources will be created."
-}
-
 variable "instance_name" {
   type        = string
   description = "The of the database instance."
@@ -26,7 +11,7 @@ variable "suffix" {
 
 variable "database_version" {
   type        = string
-  default     = "POSTGRES_12"
+  default     = "POSTGRES_14"
   description = "The db version that should be deployed in the instance."
 }
 
@@ -53,4 +38,13 @@ variable "require_ssl" {
   type        = bool
   default     = true
   description = "Set this to false to allow connections without SSL validation."
+}
+
+variable "database_flags" {
+  type = list(object({
+    name  = string
+    value = any
+  }))
+  default     = []
+  description = "The list of database flags to set in the instance. Refer: https://cloud.google.com/sql/docs/postgres/flags"
 }
