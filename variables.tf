@@ -1,3 +1,13 @@
+variable "project_id" {
+  type        = string
+  description = "The id of the project where the instance has to be created."
+}
+
+variable "project_region" {
+  type        = string
+  description = "The region where the resources will be created."
+}
+
 variable "instance_name" {
   type        = string
   description = "The of the database instance."
@@ -47,4 +57,16 @@ variable "database_flags" {
   }))
   default     = []
   description = "The list of database flags to set in the instance. Refer: https://cloud.google.com/sql/docs/postgres/flags"
+}
+
+variable "use_special_char_in_password" {
+  type        = bool
+  default     = false
+  description = "If true, the generated default password will contain special characters."
+}
+
+variable "additional_user_labels" {
+  type        = any
+  default     = {}
+  description = "Additional user labels to be attached with the instance."
 }
