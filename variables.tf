@@ -8,11 +8,6 @@ variable "project_region" {
   description = "The region where the resources will be created."
 }
 
-variable "project_zone" {
-  type        = string
-  description = "The zone where the resources will be created."
-}
-
 variable "instance_name" {
   type        = string
   description = "The of the database instance."
@@ -26,7 +21,7 @@ variable "suffix" {
 
 variable "database_version" {
   type        = string
-  default     = "POSTGRES_12"
+  default     = "POSTGRES_14"
   description = "The db version that should be deployed in the instance."
 }
 
@@ -53,4 +48,25 @@ variable "require_ssl" {
   type        = bool
   default     = true
   description = "Set this to false to allow connections without SSL validation."
+}
+
+variable "database_flags" {
+  type = list(object({
+    name  = string
+    value = any
+  }))
+  default     = []
+  description = "The list of database flags to set in the instance. Refer: https://cloud.google.com/sql/docs/postgres/flags"
+}
+
+variable "use_special_char_in_password" {
+  type        = bool
+  default     = false
+  description = "If true, the generated default password will contain special characters."
+}
+
+variable "additional_user_labels" {
+  type        = any
+  default     = {}
+  description = "Additional user labels to be attached with the instance."
 }

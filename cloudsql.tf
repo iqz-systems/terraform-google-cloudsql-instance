@@ -1,5 +1,6 @@
 resource "google_sql_database_instance" "db_instance" {
-  name    = lower("${var.instance_name}-db${var.suffix == "" ? "" : join("", ["-", var.suffix])}")
+  name = lower("${var.instance_name}-db${var.suffix == "" ? "" : join("", ["-", var.suffix])}")
+
   project = var.project_id
   region  = var.project_region
 
@@ -12,13 +13,16 @@ resource "google_sql_database_instance" "db_instance" {
     disk_size       = 20
     disk_type       = "PD_SSD"
 
-    user_labels = {
+    user_labels = merge({
       "project" = var.project_id
-    }
+    }, var.additional_user_labels)
 
-    database_flags {
-      name  = "max_connections"
-      value = "150"
+    dynamic "database_flags" {
+      for_each = var.database_flags
+      content {
+        name  = database_flags.value["name"]
+        value = database_flags.value["value"]
+      }
     }
 
     backup_configuration {
@@ -61,8 +65,11 @@ resource "google_sql_database_instance" "db_instance" {
 
 resource "random_password" "default_user_password" {
   length           = 64
-  special          = true
-  override_special = "_%()@!~+-*"
+  upper            = true
+  lower            = true
+  numeric          = true
+  special          = var.use_special_char_in_password
+  override_special = "_()~+-*"
 
   keepers = {
     user_name = "db_default_user"
