@@ -13,6 +13,8 @@ resource "google_sql_database_instance" "db_instance" {
     disk_size       = 20
     disk_type       = "PD_SSD"
 
+    deletion_protection_enabled = var.deletion_protection
+
     user_labels = merge({
       "project" = var.project_id
     }, var.additional_user_labels)
