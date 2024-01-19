@@ -65,6 +65,12 @@ variable "use_special_char_in_password" {
   description = "If true, the generated default password will contain special characters."
 }
 
+variable "override_special" {
+  type        = string
+  default     = "_()~+-*"
+  description = "List of special characters which should be allowed in the database password. Used only if `use_special_char_in_password` is set to `true`."
+}
+
 variable "additional_user_labels" {
   type        = any
   default     = {}

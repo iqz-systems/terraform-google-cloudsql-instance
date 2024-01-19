@@ -69,7 +69,7 @@ resource "random_password" "default_user_password" {
   lower            = true
   numeric          = true
   special          = var.use_special_char_in_password
-  override_special = "_()~+-*"
+  override_special = var.override_special
 
   keepers = {
     user_name = "db_default_user"
