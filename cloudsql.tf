@@ -13,6 +13,8 @@ resource "google_sql_database_instance" "db_instance" {
     disk_size       = 20
     disk_type       = "PD_SSD"
 
+    deletion_protection_enabled = var.deletion_protection
+
     user_labels = merge({
       "project" = var.project_id
     }, var.additional_user_labels)
@@ -69,7 +71,7 @@ resource "random_password" "default_user_password" {
   lower            = true
   numeric          = true
   special          = var.use_special_char_in_password
-  override_special = "_()~+-*"
+  override_special = var.override_special
 
   keepers = {
     user_name = "db_default_user"
