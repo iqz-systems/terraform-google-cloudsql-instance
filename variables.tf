@@ -44,10 +44,14 @@ variable "authorized_networks" {
   default = []
 }
 
-variable "require_ssl" {
-  type        = bool
-  default     = true
+variable "ssl_mode" {
+  type        = string
+  default     = "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
   description = "Set this to false to allow connections without SSL validation."
+  validation {
+    condition     = contains(["ALLOW_UNENCRYPTED_AND_ENCRYPTED", "ENCRYPTED_ONLY", "TRUSTED_CLIENT_CERTIFICATE_REQUIRED"], var.ssl_mode)
+    error_message = "Valid values for var: 'ALLOW_UNENCRYPTED_AND_ENCRYPTED','ENCRYPTED_ONLY','TRUSTED_CLIENT_CERTIFICATE_REQUIRED'"
+  }
 }
 
 variable "database_flags" {
@@ -75,4 +79,39 @@ variable "additional_user_labels" {
   type        = any
   default     = {}
   description = "Additional user labels to be attached with the instance."
+}
+
+variable "query_insights_enabled" {
+  type        = bool
+  default     = false
+  description = "Set this to true to enable query insights."
+  nullable    = true
+}
+
+variable "query_plans_per_minute" {
+  type        = number
+  default     = 5
+  description = "The number of query plans to be collected per minute."
+  nullable    = true
+}
+
+variable "query_string_length" {
+  type        = number
+  default     = 1024
+  description = "The maximum length of the query string."
+  nullable    = true
+}
+
+variable "record_application_tags" {
+  type        = bool
+  default     = true
+  description = "Set this to true to record application tags."
+  nullable    = true
+}
+
+variable "record_client_address" {
+  type        = bool
+  default     = true
+  description = "Set this to true to record client address."
+  nullable    = true
 }

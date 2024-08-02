@@ -40,7 +40,7 @@ resource "google_sql_database_instance" "db_instance" {
 
     ip_configuration {
       ipv4_enabled = true
-      require_ssl  = var.require_ssl
+      ssl_mode     = var.ssl_mode
 
       dynamic "authorized_networks" {
         for_each = var.authorized_networks
@@ -49,6 +49,14 @@ resource "google_sql_database_instance" "db_instance" {
           value = authorized_networks.value["value"]
         }
       }
+    }
+
+    insights_config {
+      query_insights_enabled  = var.query_insights_enabled
+      query_string_length     = var.query_string_length
+      record_application_tags = var.record_application_tags
+      record_client_address   = var.record_client_address
+      query_plans_per_minute  = var.query_plans_per_minute
     }
 
     maintenance_window {
