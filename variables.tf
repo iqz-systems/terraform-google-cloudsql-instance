@@ -25,6 +25,16 @@ variable "database_version" {
   description = "The db version that should be deployed in the instance."
 }
 
+variable "edition" {
+  type        = string
+  default     = "ENTERPRISE_PLUS"
+  description = "Database instance edition to use. Valid values are 'ENTERPRISE' and 'ENTERPRISE_PLUS'."
+  validation {
+    condition     = contains(["ENTERPRISE", "ENTERPRISE_PLUS"], var.edition)
+    error_message = "Valid values for var: 'ENTERPRISE', 'ENTERPRISE_PLUS'"
+  }
+}
+
 variable "machine_tier" {
   type        = string
   description = "The machine tier for the database instance."
