@@ -9,6 +9,7 @@ resource "google_sql_database_instance" "db_instance" {
 
   settings {
     tier            = var.machine_tier
+    edition         = var.edition
     disk_autoresize = true
     disk_size       = 20
     disk_type       = "PD_SSD"
