@@ -51,13 +51,14 @@ variable "authorized_networks" {
     name  = string
     value = string
   }))
-  default = []
+  default     = []
+  description = "The list of networks (name and CIDR value) that are allowed to connect to the instance over its public IP."
 }
 
 variable "ssl_mode" {
   type        = string
   default     = "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
-  description = "Set this to false to allow connections without SSL validation."
+  description = "The SSL mode of the public IP. Valid values are 'ALLOW_UNENCRYPTED_AND_ENCRYPTED' (SSL is optional), 'ENCRYPTED_ONLY' (SSL is required, client certificates are not) and 'TRUSTED_CLIENT_CERTIFICATE_REQUIRED' (SSL with a trusted client certificate is required)."
   validation {
     condition     = contains(["ALLOW_UNENCRYPTED_AND_ENCRYPTED", "ENCRYPTED_ONLY", "TRUSTED_CLIENT_CERTIFICATE_REQUIRED"], var.ssl_mode)
     error_message = "Valid values for var: 'ALLOW_UNENCRYPTED_AND_ENCRYPTED','ENCRYPTED_ONLY','TRUSTED_CLIENT_CERTIFICATE_REQUIRED'"
